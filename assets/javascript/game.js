@@ -54,9 +54,8 @@ document.onkeyup = function (event) {
 
     for (var i = 0; i < wordList[wordIndex].char; i++) {
         if (keyPress === wordList[wordIndex].w[i]) {
-            //replace underscores with the correct letter; still not working as expected
-             wordListBlanks[wordIndex].w[i] === wordList[wordIndex].w[i]
-            console.log(wordListBlanks[wordIndex].w)
+            // logic for swapping underscores for letters goes here
+            console.log(wordList[wordIndex].w)
             return
         }
     }
