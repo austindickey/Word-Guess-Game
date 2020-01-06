@@ -46,7 +46,7 @@ document.onkeyup = function (event) {
 
     if (keyPress === "a" || keyPress === "b" || keyPress === "c" || keyPress === "d" || keyPress === "e" || keyPress === "f" || keyPress === "g" || keyPress === "h" || keyPress === "i" || keyPress === "j" || keyPress === "k" || keyPress === "l" || keyPress === "m" || keyPress === "n" || keyPress === "o" || keyPress === "p" || keyPress === "q" || keyPress === "r" || keyPress === "s" || keyPress === "t" || keyPress === "u" || keyPress === "v" || keyPress === "w" || keyPress === "x" || keyPress === "y" || keyPress === "z") {
         wordList[wordIndex].guesses--
-        // if keyPress has already been pressed, don't remove a guess from the user again
+        // add in if statement for if keyPress has already been pressed, don't remove a guess from the user again -- not done
         document.querySelector("#guesses").innerHTML = "Guesses Left: " + wordList[wordIndex].guesses
         if (wordList[wordIndex].guesses === 0) {
             losses++
