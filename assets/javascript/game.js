@@ -19,21 +19,21 @@ var losses = 0
 var adder = 0
 var blanks = []
 
-function clearContent() {
-    document.querySelector("#word").innerHTML = "Correct letters guessed: "
-    blanks = []
-}
-
 function createBlanks() {
-    clearContent()
-    for (var k = 0; k < wordList[wordIndex].char; k++) {
+    blanks = []
+    for (var i = 0; i < wordList[wordIndex].char; i++) {
         blanks.push("_")
     }
 
-    document.getElementById("word").innerHTML = blanks.join(" ")
+    document.querySelector("#word").innerHTML = blanks.join(" ")
 }
 
 function endGame() {
+
+    if (wordIndex >= wordList.length) {
+        document.querySelector("#masterBox").innerHTML = "Game Over!"
+        return
+    }
 
     if (wordList[wordIndex].guesses === 0) {
         losses++
@@ -48,11 +48,7 @@ function endGame() {
         adder = 0
         createBlanks();
     }
-
-    if (wordIndex >= wordList.length) {
-        document.querySelector("#masterBox").innerHTML = "Game Over!"
-        return
-    }
+    
 }
 
 document.onkeyup = function (event) {
@@ -61,7 +57,6 @@ document.onkeyup = function (event) {
 
     document.querySelector("#wins").innerHTML = "Wins: " + wins
     document.querySelector("#losses").innerHTML = "Losses: " + losses
-    document.querySelector("#characters").innerHTML = "Number of letters in word: " + wordList[wordIndex].char
 
     if (keyPress === "a" || keyPress === "b" || keyPress === "c" || keyPress === "d" || keyPress === "e" || keyPress === "f" || keyPress === "g" || keyPress === "h" || keyPress === "i" || keyPress === "j" || keyPress === "k" || keyPress === "l" || keyPress === "m" || keyPress === "n" || keyPress === "o" || keyPress === "p" || keyPress === "q" || keyPress === "r" || keyPress === "s" || keyPress === "t" || keyPress === "u" || keyPress === "v" || keyPress === "w" || keyPress === "x" || keyPress === "y" || keyPress === "z") {
     }
