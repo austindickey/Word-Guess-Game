@@ -18,6 +18,7 @@ var wins = 0
 var losses = 0
 var adder = 0
 var blanks = []
+var first = true;
 
 function createBlanks() {
     blanks = []
@@ -51,6 +52,12 @@ function endGame() {
 
 document.onkeyup = function (event) {
     var keyPress = event.key.toLowerCase()
+
+    if (first) {
+        createBlanks();
+        first = false;
+    }
+
     var corrects = document.querySelector("#word")
 
     document.querySelector("#wins").innerHTML = "Wins: " + wins
@@ -67,7 +74,10 @@ document.onkeyup = function (event) {
         var goodChar = false
 
         for (var i = 0; i < wordList[wordIndex].char; i++) {
-            if (wordList[wordIndex].word[i] === char) {
+            if (wordList[wordIndex].word[i] === char && blanks.includes(keyPress)) {
+                goodChar = false
+            }
+            else if (wordList[wordIndex].word[i] === char) {
                 goodChar = true
             }
         }
@@ -77,18 +87,17 @@ document.onkeyup = function (event) {
                 if (wordList[wordIndex].word[j] === char) {
                     adder += alphabetScore[keyPress]
                     blanks[j] = keyPress
-                    corrects.textContent = blanks
-                    return
                 }
             }
+            corrects.textContent = blanks
         }
 
         else {
-            wordList[wordIndex].guesses--
-            document.querySelector("#guesses").innerHTML = "Guesses Left: " + wordList[wordIndex].guesses
+            document.querySelector("#guesses").innerHTML = "Guesses Left: " + wordList[wordIndex].guesses--
+            // make bad letters display on page and you're finished -- document.querySelector("#wrongLetter").innerHTML = keyPress
         }
     }
-
-    checkChars(keyPress)
     endGame()
+    checkChars(keyPress)
+    
 }
