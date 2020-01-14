@@ -29,7 +29,6 @@ function createBlanks() {
 }
 
 function endGame() {
-
     if (wordIndex >= wordList.length) {
         document.querySelector("#masterBox").innerHTML = "Game Over!"
         return
@@ -39,16 +38,15 @@ function endGame() {
         losses++
         wordIndex++
         adder = 0
-        createBlanks();
+        createBlanks()
     }
 
     if (adder === wordList[wordIndex].sum && wordList[wordIndex].guesses !== 0) {
         wins++
         wordIndex++
         adder = 0
-        createBlanks();
+        createBlanks()
     }
-    
 }
 
 document.onkeyup = function (event) {
@@ -66,7 +64,6 @@ document.onkeyup = function (event) {
     }
 
     function checkChars(char) {
-
         var goodChar = false
 
         for (var i = 0; i < wordList[wordIndex].char; i++) {
@@ -90,10 +87,8 @@ document.onkeyup = function (event) {
             wordList[wordIndex].guesses--
             document.querySelector("#guesses").innerHTML = "Guesses Left: " + wordList[wordIndex].guesses
         }
-
     }
 
     checkChars(keyPress)
     endGame()
-
 }
