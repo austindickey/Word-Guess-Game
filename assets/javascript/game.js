@@ -18,7 +18,7 @@ var wins = 0
 var losses = 0
 var adder = 0
 var blanks = []
-var first = true;
+var first = true
 
 function createBlanks() {
     blanks = []
@@ -27,6 +27,12 @@ function createBlanks() {
     }
 
     document.querySelector("#word").innerHTML = blanks.join(" ")
+}
+
+function newWord() {
+    createBlanks()
+    document.querySelector("#wrongLetters").innerHTML = "Wrong Letters Guessed: "
+    document.querySelector("#guesses").innerHTML = "Guesses Left: "
 }
 
 function endGame() {
@@ -39,14 +45,14 @@ function endGame() {
         losses++
         wordIndex++
         adder = 0
-        createBlanks()
+        newWord()
     }
 
     if (adder === wordList[wordIndex].sum && wordList[wordIndex].guesses !== 0) {
         wins++
         wordIndex++
         adder = 0
-        createBlanks()
+        newWord()
     }
 }
 
@@ -54,8 +60,8 @@ document.onkeyup = function (event) {
     var keyPress = event.key.toLowerCase()
 
     if (first) {
-        createBlanks();
-        first = false;
+        newWord()
+        first = false
     }
 
     var corrects = document.querySelector("#word")
@@ -94,10 +100,10 @@ document.onkeyup = function (event) {
 
         else {
             document.querySelector("#guesses").innerHTML = "Guesses Left: " + wordList[wordIndex].guesses--
-            // make bad letters display on page and you're finished -- document.querySelector("#wrongLetter").innerHTML = keyPress
+            document.querySelector("#wrongLetters").append(keyPress + " ")
         }
     }
+
     endGame()
     checkChars(keyPress)
-    
 }
