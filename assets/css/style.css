@@ -4,6 +4,8 @@
 
 .jumbotron {
     text-align: center;
+    background-image: url(../images/vichy.png);
+    border-bottom: 8px solid gray;
 }
 
 /* =================================
@@ -12,4 +14,31 @@
 
 .centeredtext {
     text-align: center;
+    margin-top: 50px;
+}
+
+body {
+    background-image: url(../images/purty_wood.png);
+}
+
+h2 {
+    margin-bottom: 50px;
+}
+
+p {
+    font-size: 20px;
+}
+
+/* =================================
+            Footer
+================================= */
+
+footer {
+    background-image: url(../images/vichy.png);
+    border-top: 8px solid gray;
+}
+
+footer a:hover {
+    color: orange;
+    text-decoration: none;
 }
