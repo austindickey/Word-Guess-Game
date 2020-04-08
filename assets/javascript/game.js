@@ -19,25 +19,32 @@ var losses = 0
 var adder = 0
 var guesses = 10
 var blanks = []
+var duplicateGuesses = []
 
 function createBlanks() {
     blanks = []
-    for (var i = 0; i < wordList[wordIndex].char; i++) {
-        blanks.push("_")
+
+    if (wordIndex === wordList.length) {
+        addStartButton()
+    } else {
+        for (var i = 0; i < wordList[wordIndex].char; i++) {
+            blanks.push("_")
+        }
+    
+        // What blanks looks like after the loop:
+        // blanks = ["_","_","_","_"]
+    
+        blanks.join(" ")
+    
+        // What I'm expecting:
+        // _ _ _ _
+    
+        // What I'm getting:
+        // _,_,_,_
+    
+        $("#word").text(blanks)
     }
 
-    // What blanks looks like after the loop:
-    // blanks = ["_","_","_","_"]
-
-    blanks.join(" ")
-
-    // What I'm expecting:
-    // _ _ _ _
-
-    // What I'm getting:
-    // _,_,_,_
-
-    $("#word").text(blanks)
 }
 
 function newWord() {
@@ -55,33 +62,34 @@ function endGame() {
     if (wordIndex >= wordList.length) {
         $("#masterBox").text("Game Over!")
         addStartButton()
-    }
-
-    if (guesses === 0) {
-        losses++
-        wordIndex++
-        adder = 0
-        guesses = 10
-        displayScore()
-        newWord()
-    }
-
-    if (adder === wordList[wordIndex].sum && guesses !== 0) {
-        wins++
-        wordIndex++
-        adder = 0
-        guesses = 10
-        displayScore()
-        newWord()
+    } else {
+        if (guesses === 0) {
+            losses++
+            wordIndex++
+            adder = 0
+            guesses = 10
+            displayScore()
+            newWord()
+        }
+    
+        if (adder === wordList[wordIndex].sum && guesses !== 0) {
+            wins++
+            wordIndex++
+            adder = 0
+            guesses = 10
+            displayScore()
+            newWord()
+        }
     }
 }
 
 function addStartButton() {
     $("#word").html("<button id='startGame' type='button' class='btn btn-secondary'>Start Game</button>")
+    $("#wins").empty()
+    $("#losses").empty()
+    $("#wrongLetters").empty()
+    $("#guesses").empty()
 }
-
-var duplicateGuesses = []
-var badGuesses = []
 
 function checkChars(keyPress) {
     var goodChar = false
@@ -90,11 +98,10 @@ function checkChars(keyPress) {
 
     for (var i = 0; i < wordList[wordIndex].char; i++) {
         if (wordList[wordIndex].word[i] === keyPress && blanks.includes(keyPress)) {
+            duplicateGuesses.push(keyPress)
             goodChar = false
-            // console.log(goodChar)
         } else if (wordList[wordIndex].word[i] === keyPress) {
             goodChar = true
-            // console.log(goodChar)
         }
     }
 
@@ -113,27 +120,20 @@ function checkChars(keyPress) {
         if (jQuery.inArray(keyPress, duplicateGuesses) === -1){
             $("#guesses").text("Guesses Left: " + guesses--)
             $("#wrongLetters").append(keyPress + " ")
-        } else {
-            badGuesses.push(keyPress)
             duplicateGuesses.push(keyPress)
-            console.log("bad: " + badGuesses)
-            console.log("dup from else: " + duplicateGuesses)
         }
         endGame()
     }
 }
 
 function startGame() {
-    // var keyPress = event.key.toLowerCase()
 
     displayScore()
-
     newWord()
 
     $(document).keydown(function (e) {
         if (e.keyCode >= 65 && e.keyCode <= 90) {
             var keyPress = e.originalEvent.key
-            // console.log(keyPress)
             checkChars(keyPress)
         }
     })
@@ -148,3 +148,7 @@ $(document).ready(function () {
     })
 })
 
+// Duplicated outside of doc.ready func for restart
+$("#startGame").on("click", function () {
+    startGame()
+})
