@@ -6,7 +6,10 @@ var wordList = [
     { word: "guitar", char: 6, sum: 76 },
     { word: "drifter", char: 7, sum: 80 },
     { word: "bank", char: 4, sum: 28 },
-    { word: "onion", char: 5, sum: 67 }
+    { word: "onion", char: 5, sum: 67 },
+    { word: "market", char: 6, sum: 68 },
+    { word: "pilot", char: 5, sum: 72 },
+    { word: "zebra", char: 5, sum: 52 }
 ]
 
 // This game will be based of an alphabet score system. If the letters do not add up to the sum, it will be a loss.
@@ -42,6 +45,7 @@ function restartGame() {
 // Create the blanks for each word
 function createBlanks() {
     blanks = []
+    duplicateGuesses = []
 
     if (wordIndex === wordList.length) {
         restartGame()
