@@ -1,3 +1,4 @@
+// All words in the game
 var wordList = [
     { word: "bolt", char: 4, sum: 49 },
     { word: "grime", char: 5, sum: 52 },
@@ -13,6 +14,7 @@ var alphabetScore = {
     a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26
 }
 
+// Initializing Variables
 var wordIndex = 0
 var wins = 0
 var losses = 0
@@ -21,80 +23,79 @@ var guesses = 10
 var blanks = []
 var duplicateGuesses = []
 
+// Restart the game after final word
+function restartGame() {
+    $("#gameOver").text("Game Over!")
+    $("#word").html("<button id='restart' type='button' class='btn btn-secondary'>Restart Game</button>")
+    $("#wrongLetters").empty()
+    $("#guesses").empty()
+
+    wordIndex = 0
+    wins = 0
+    losses = 0
+
+    $("#restart").on("click", function () {
+        startGame()
+    })
+}
+
+// Create the blanks for each word
 function createBlanks() {
     blanks = []
 
     if (wordIndex === wordList.length) {
-        addStartButton()
+        restartGame()
     } else {
         for (var i = 0; i < wordList[wordIndex].char; i++) {
             blanks.push("_")
         }
-    
-        // What blanks looks like after the loop:
-        // blanks = ["_","_","_","_"]
-    
-        blanks.join(" ")
-    
-        // What I'm expecting:
-        // _ _ _ _
-    
-        // What I'm getting:
-        // _,_,_,_
-    
-        $("#word").text(blanks)
+
+        var noCommas = blanks.join(" ")
+        $("#word").text(noCommas)
     }
 
 }
 
-function newWord() {
-    createBlanks()
+// Print all the neccessary text to the screen
+function displayScore() {
+    $("#gameOver").empty()
+    $("#wins").text("Wins: " + wins)
+    $("#losses").text("Losses: " + losses)
     $("#wrongLetters").text("Wrong Letters Guessed: ")
     $("#guesses").text("Guesses Left: " + guesses)
 }
 
-function displayScore() {
-    $("#wins").text("Wins: " + wins)
-    $("#losses").text("Losses: " + losses)
-}
-
+// Check for wins and losses
 function endGame() {
-    if (wordIndex >= wordList.length) {
-        $("#masterBox").text("Game Over!")
-        addStartButton()
-    } else {
-        if (guesses === 0) {
-            losses++
-            wordIndex++
-            adder = 0
-            guesses = 10
-            displayScore()
-            newWord()
-        }
-    
-        if (adder === wordList[wordIndex].sum && guesses !== 0) {
-            wins++
-            wordIndex++
-            adder = 0
-            guesses = 10
-            displayScore()
-            newWord()
-        }
+    // Losses
+    if (guesses === 0) {
+        losses++
+        wordIndex++
+        adder = 0
+        guesses = 10
+        displayScore()
+        createBlanks()
     }
+    // Wins
+    if (adder === wordList[wordIndex].sum && guesses !== 0) {
+        wins++
+        wordIndex++
+        adder = 0
+        guesses = 10
+        displayScore()
+        createBlanks()
+    } 
 }
 
+// Create the start game button
 function addStartButton() {
     $("#word").html("<button id='startGame' type='button' class='btn btn-secondary'>Start Game</button>")
-    $("#wins").empty()
-    $("#losses").empty()
-    $("#wrongLetters").empty()
-    $("#guesses").empty()
 }
 
+// Logic for each key press
 function checkChars(keyPress) {
     var goodChar = false
     var corrects = $("#word")
-    
 
     for (var i = 0; i < wordList[wordIndex].char; i++) {
         if (wordList[wordIndex].word[i] === keyPress && blanks.includes(keyPress)) {
@@ -112,9 +113,8 @@ function checkChars(keyPress) {
                 blanks[j] = keyPress
             }
         }
-        blanks.join(" ")
-        corrects.text(blanks)
-        // console.log("Correct: " + blanks)
+        var noCommas = blanks.join(" ")
+        corrects.text(noCommas)
         endGame()
     } else {
         if (jQuery.inArray(keyPress, duplicateGuesses) === -1){
@@ -126,10 +126,11 @@ function checkChars(keyPress) {
     }
 }
 
+// Starts the game and listens to every letter pressed
 function startGame() {
 
     displayScore()
-    newWord()
+    createBlanks()
 
     $(document).keydown(function (e) {
         if (e.keyCode >= 65 && e.keyCode <= 90) {
@@ -139,16 +140,11 @@ function startGame() {
     })
 }
 
-// Listeners
+// Listener for page load and start game button click
 $(document).ready(function () {
     addStartButton()
 
     $("#startGame").on("click", function () {
         startGame()
     })
-})
-
-// Duplicated outside of doc.ready func for restart
-$("#startGame").on("click", function () {
-    startGame()
 })
